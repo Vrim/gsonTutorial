@@ -63,8 +63,7 @@ To write, we again need the `GsonBuilder` class.
 Taking from the example above, we swap the `Writer` for a `Reader` and instead of `gson.toJson()` we use `gson.fromJson()`
 ```
 try (Reader reader = new FileReader(file)) {
-    Gson gson = new GsonBuilder().create();
-    
+    Gson gson = new GsonBuilder().create();    
     
     // Gson needs the class of your object to read it
     gson.fromJson(reader, object.class);
@@ -105,8 +104,9 @@ public class example {
  ```
  private transient int ignoreMe;
  private int lookAtMe;
- ```
- 
+ ``` 
 ## Have Fun
 
 Thanks for reading and have fun using JSON!
+
+For Any Questions Please Refer To The [DOCS](https://sites.google.com/site/gson/gson-user-guide)
