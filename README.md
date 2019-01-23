@@ -1,4 +1,4 @@
-# Intro To GSON in Javafx
+# Intro To GSON in Java with Maven
 ###### By Cameron Fairchild
 
 Gson is a library provided by Google for the implementation of JSON in Java.
