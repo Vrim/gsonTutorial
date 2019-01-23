@@ -18,6 +18,9 @@ requires gson;
 This will download the Gson library and add it to your `POM.xml` file for you.
 
 ### Import It
+We can either use NetBeans' hints to import it or add the import `import com.google.gson.Gson;` and `import com.google.gson.GsonBuilder;` to the top of our file.
+
+
 Go back to that `Gson gson;` line and click the error from NetBeans.
 
 Select the option to `Add import for com.google.gson.Gson`
@@ -33,7 +36,7 @@ Create an instance of this object wherever you intend to use it.
 ```
 Gson gson = new GsonBuilder().create();
 ```
-Next, you need to decide whether you are writing or reading from/to a file.
+This object will convert between JSON and Java Objects
 
 ### File Writing
 To write, first pick your favourite Writer object. We'll use the FileWriter in this case.
@@ -50,7 +53,60 @@ try (Writer writer = new FileWriter(file)) {
     Gson gson = new GsonBuilder()                   
                     .create();
     // Write to your file
-    // This converts it to a Json string and writes it to the file
+    // This converts it to JSON as a String and writes it to the file
     gson.toJson(object, writer);
 }
 ```
+
+### File Reading
+To write, we again need the `GsonBuilder` class.
+Taking from the example above, we swap the `Writer` for a `Reader` and instead of `gson.toJson()` we use `gson.fromJson()`
+```
+try (Reader reader = new FileReader(file)) {
+    Gson gson = new GsonBuilder().create();
+    
+    
+    // Gson needs the class of your object to read it
+    gson.fromJson(reader, object.class);
+}
+```
+### Setup Of Objects
+Gson will only read or wrtie object attributes (variables) that are `private`
+This means that any other attributes will not be read to or written from. 
+### Annotations
+
+Using the annotation `@Expose` we can control which attributes Gson will see. 
+First, we need to import it. This can be done via NetBeans or by adding the import `import com.google.gson.annotations.Expose;`
+to the top of the object in question.
+
+Here is an example of an object using the annotation
+```
+import com.google.gson.annotations.Expose;
+
+public class example {
+    // This attribute will not be picked up by Gson
+    private int ignoreMe;
+    
+    // This attribute will be picked up by Gson
+    @Expose
+    private int lookAtMe;
+ }
+ ```
+ Now that the class is set-up, we need to specify whether to ignore the annotated attributes or only use the ones with annotations.
+ ```
+ // We just add one extra line
+ // This will exclude attributes without the annotation
+ Gson gson = new GsonBuilder()
+                            .create()
+                            .excludeFieldsWithoutExposeAnnotation();
+ ```
+ To exclude an attribute, we can also use the keyword `transient`
+ For instance:
+ ```
+ private transient int ignoreMe;
+ private int lookAtMe;
+ ```
+ 
+## Have Fun
+
+Thanks for reading and have fun using JSON!
